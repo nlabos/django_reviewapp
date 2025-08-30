@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="form-signin w-100 m-auto" style="max-width: 330px;">
+    <form method="post"> {% csrf_token %}
+        <h1 class="h3 mb-3 fw-normal">会員登録をする</h1>
+        {% if error %}
+        {{ error }}
+        {% endif %}
+        <div class="form-floating">
+            <input class="form-control" id="floatingInput" placeholder="ユーザ名" name="username_data">
+            <label for="floatingInput">ユーザ名</label>
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="パスワード", name="password_data">
+            <label for="floatingPassword">パスワード</label>
+        </div>
+        <button class="btn btn-primary w-100 py-2" type="submit">会員登録</button>
+    </form>
+</main>
+{% endblock content %}
