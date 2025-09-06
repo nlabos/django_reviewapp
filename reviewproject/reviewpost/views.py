@@ -2,6 +2,9 @@ from django.db import IntegrityError
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.shortcuts import render, redirect
+from .models import ReviewModel
+
 
 def signupview(request):
     if request.method == 'POST':
@@ -14,7 +17,7 @@ def signupview(request):
             return render(request, 'signup.html', {'error':'このユーザーは既に登録されています。'})
     else:
         return render(request, 'signup.html', {})
-    
+
 def loginview(request):
     if request.method == 'POST':
         username = request.POST.get('username_data')
@@ -22,9 +25,22 @@ def loginview(request):
         user = authenticate(request,username=username, password=password)
         if user is not None:
             login(request,user)
-            print('ログイン成功です!!!')
+            return redirect('list')
         else :
-            print('Userが存在しません')
-        return render(request, 'login.html', {})
+            return redirect('login')
     else:
         return render(request, 'login.html', {})
+
+def listview(request):
+    object_list = ReviewModel.objects.all()
+    return render(request, 'list.html', {'object_list':object_list})
+    
+def columnview(request):
+    if request.method == 'POST':
+        return redirect('login')
+    else:
+        return render(request, 'login.html', {})
+    
+def detailview(request, pk):
+    object = ReviewModel.objects.get(pk = pk)
+    return render(request, 'detail.html', {'object': object})
